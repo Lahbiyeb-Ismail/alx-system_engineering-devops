@@ -22,6 +22,5 @@ do
             echo "$count"
             ;;
     esac
-    # Increment counter
     ((count++))
 done
