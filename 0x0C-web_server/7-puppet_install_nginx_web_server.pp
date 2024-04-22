@@ -1,36 +1,25 @@
 #Install Nginx web server (w/ Puppet)
 
-class nginx_setup {
-  # Ensure nginx is installed
-  package { 'nginx':
-    ensure => installed,
-  }
+package {'nginx':
+  ensure => 'present',
+}
 
-  # Create a default page for nginx
-  file { '/var/www/html/index.html':
-    ensure  => file,
-    content => 'Hello World!',
-    require => Package['nginx'],
-  }
+exec {'install':
+  command  => 'sudo apt-get update ; sudo apt-get -y install nginx',
+  provider => shell,
 
-  # Ensure nginx is listening on port 80
-  file_line { 'listen_port':
-    path => '/etc/nginx/sites-enabled/default',
-    line => '    listen 80 default_server;',
-    require => Package['nginx'],
-  }
+}
 
-  # Configure a 301 redirect for /redirect_me
-  file_line { 'redirect':
-    path => '/etc/nginx/sites-enabled/default',
-    line => '    rewrite ^/redirect_me https://www.google.com permanent;',
-    require => Package['nginx'],
-  }
+exec {'Hello':
+  command  => 'echo "Hello World!" | sudo tee /var/www/html/index.html',
+  provider => shell,
+}
 
-  # Ensure nginx is running and enabled to start on boot
-  service { 'nginx':
-    ensure => running,
-    enable => true,
-    require => [Package['nginx'], File['/var/www/html/index.html'], File_line['listen_port'], File_line['redirect']],
-  }
+exec {'sudo sed -i "s/listen 80 default_server;/listen 80 default_server;\\n\\tlocation \/redirect_me {\\n\\t\\treturn 301 https:\/\/blog.ehoneahobed.com\/;\\n\\t}/" /etc/nginx/sites-available/default':
+  provider => shell,
+}
+
+exec {'run':
+  command  => 'sudo service nginx restart',
+  provider => shell,
 }
