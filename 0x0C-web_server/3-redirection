@@ -9,13 +9,14 @@ sudo apt-get update
 sudo apt-get install -y nginx
 
 # Create an index.html file with "Hello World!" content
-echo "Hello World!" | sudo tee /var/www/html/index.html
+echo "Hello World!" | tee /var/www/html/index.nginx-debian.html
 
 # Define a string for replacement in the Nginx configuration file
-string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.blog.ehoneahobed.com permanent;"
+to_rep="server_name _;"
+rep="\n\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com;\n\t}"
 
 # Replace the default server_name configuration with the redirection configuration
-sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+sudo sed -i "s|${to_rep}|${to_rep}${rep}|" /etc/nginx/sites-available/default
 
 # Restart the Nginx service to apply the changes
 sudo service nginx restart
