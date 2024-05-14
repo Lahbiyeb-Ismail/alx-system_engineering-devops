@@ -1,46 +1,11 @@
 #!/usr/bin/env bash
+# backup and compress my databases
 
-# Check if the password argument is provided
-if [ -z "$1" ]; then
-  echo "Usage: $0 <mysql_root_password>"
-  exit 1
-fi
+# variables
+day=$(date +"%d")
+month=$(date +"%m")
+year=$(date +"%Y")
+file_name="$day-$month-$year.tar.gz"
 
-# Create a temporary MySQL configuration file
-MYSQL_ROOT_PASSWORD=$1
-TEMP_MY_CNF=$(mktemp)
-cat <<EOF > ${TEMP_MY_CNF}
-[client]
-user=root
-password=${MYSQL_ROOT_PASSWORD}
-EOF
-
-# Ensure the temporary config file is removed on exit
-trap "rm -f ${TEMP_MY_CNF}" EXIT
-
-BACKUP_FILE="backup.sql"
-DATE=$(date +"%d-%m-%Y")
-ARCHIVE_FILE="${DATE}.tar.gz"
-
-# Generate the MySQL dump using the temporary config file
-mysqldump --defaults-file=${TEMP_MY_CNF} --all-databases > "${BACKUP_FILE}"
-
-# Check if mysqldump was successful
-if [ $? -ne 0 ]; then
-  echo "Failed to create MySQL dump"
-  exit 1
-fi
-
-# Create a compressed archive of the dump
-tar -czvf "${ARCHIVE_FILE}" "${BACKUP_FILE}"
-
-# Check if tar was successful
-if [ $? -ne 0 ]; then
-  echo "Failed to create archive"
-  exit 1
-fi
-
-# Clean up the backup.sql file
-# rm "${BACKUP_FILE}"
-
-echo "Backup successful: ${ARCHIVE_FILE}"
+mysqldump --all-databases -u root --password="$1" > backup.sql
+tar -czvf "$file_name" backup.sql
