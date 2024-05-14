@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Add the GPG key from the signature.key file to the system's keyring
+sudo apt-key add signature.key
+
+# Add the GPG key for the MySQL APT repository to the system's keyring
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B7B3B788A8D3785C
+
+# Append the MySQL APT repository to the /etc/apt/sources.list.d/mysql.list file
+sudo sh -c 'echo "deb http://repo.mysql.com/apt/ubuntu bionic mysql-5.7" >> /etc/apt/sources.list.d/mysql.list'
+
+# Update the package lists from the repositories
+sudo apt-get update
+
+# Display the policy and version information for the mysql-server package
+sudo apt-cache policy mysql-server
+
+# Install the specified versions of mysql-client, mysql-community-server, and mysql-server packages
+sudo apt install -f -y mysql-client=5.7* mysql-community-server=5.7* mysql-server=5.7*
