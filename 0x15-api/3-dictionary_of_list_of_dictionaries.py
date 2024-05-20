@@ -31,7 +31,7 @@ def get_all_users():
         print("Something went wrong :)")
 
 
-def get_todos():
+def get_todos(user_id):
     """
     Retrieves the todos of a user based on their ID.
 
@@ -45,7 +45,7 @@ def get_todos():
         list: A list of todos for the user.
     """
     try:
-        res = requests.get(f"{BASE_URL}/todos")
+        res = requests.get(f"{BASE_URL}/users/{user_id}/todos")
         all_todos = res.json()
         return all_todos
     except Exception:
@@ -74,7 +74,7 @@ def export_to_json():
         username = user["username"]
 
         users_data[user_id] = []
-        todos = get_todos()
+        todos = get_todos(user_id)
 
         for todo in todos:
             completed = todo["completed"]
@@ -82,8 +82,8 @@ def export_to_json():
 
             users_data[user_id].append({
                 "username": username,
-                "task": title,
                 "completed": completed,
+                "task": title,
             })
 
     filename = "todo_all_employees.json"
