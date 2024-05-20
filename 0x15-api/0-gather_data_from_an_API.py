@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 Python script that, using this REST API, for a
 given employee ID, returns information about his/her
@@ -107,10 +107,10 @@ def get_user_info():
 
         completed_todos = get_completed_todos(user_todos)
 
-        for todo in completed_todos:
-            todo_title = todo["title"]
-            print(f"\t {todo_title}")
-
+        if (len(completed_todos) > 0):
+            for todo in completed_todos:
+                todo_title = todo["title"]
+                print(f"\t {todo_title}")
     except Exception:
         print("Something went wrong :(")
 
