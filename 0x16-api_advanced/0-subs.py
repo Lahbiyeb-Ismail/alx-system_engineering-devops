@@ -18,9 +18,8 @@ def number_of_subscribers(subreddit):
     if subreddit is None:
         return 0
 
-    headers = {"User-Agent": "Chrome/88.0.4324.150"}
-
     BASE_URL = "https://www.reddit.com/r"
+    headers = {"User-Agent": "api_advanced-project"}
 
     url = "{}/{}/about.json".format(BASE_URL, subreddit)
 
