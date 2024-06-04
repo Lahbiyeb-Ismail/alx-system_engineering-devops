@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """
-function that queries the Reddit API and returns the number of
-subscribers (not active users, total subscribers) for a given
-subreddit. If an invalid subreddit is given, the function should return 0.
+Script that queries reddit subscribers of a given subreddit.
 """
 
 
@@ -18,21 +16,12 @@ def number_of_subscribers(subreddit):
     if subreddit is None or not isinstance(subreddit, str):
         return 0
 
-    BASE_URL = "https://www.reddit.com/r"
-
-    headers = {"User-Agent": "Google Chrome Version 125.0.6422.142"}
-
-    url = "{}/{}/about.json".format(BASE_URL, subreddit)
-
-    try:
-        res = requests.get(url, headers=headers, allow_redirects=False)
-        results = res.json()
-        data = results.get("data")
-        subscribers = data.get("subscribers")
-
-        if subscribers is None:
-            return 0
-
+    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+    headers = {"User-Agent": "Mozilla/5.0"}
+    response = requests.get(url, headers=headers, allow_redirects=False)
+    if response.status_code == 200:
+        data = response.json()
+        subscribers = data['data']['subscribers']
         return subscribers
-    except Exception:
+    else:
         return 0
