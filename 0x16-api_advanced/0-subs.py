@@ -19,12 +19,12 @@ def number_of_subscribers(subreddit):
         return 0
 
     BASE_URL = "https://www.reddit.com/r"
-    headers = {"User-Agent": "api_advanced-project"}
+    # headers = {"User-Agent": "api_advanced-project"}
 
     url = "{}/{}/about.json".format(BASE_URL, subreddit)
 
     try:
-        res = requests.get(url, headers=headers, allow_redirects=False)
+        res = requests.get(url, allow_redirects=False)
         if res.status_code != 200:
             return 0
 

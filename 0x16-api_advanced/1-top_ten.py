@@ -13,14 +13,14 @@ def top_ten(subreddit):
     10 hot posts listed for a given subreddit
     """
 
-    if subreddit is None or not isinstance(subreddit, str):
-        print("None")
+    # if subreddit is None or not isinstance(subreddit, str):
+    #     print("None")
 
-    user_agent = {"User-agent": "api_advanced-project"}
+    # user_agent = {"User-agent": "api_advanced-project"}
     params = {"limit": 10}
     url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
 
-    response = get(url, headers=user_agent, params=params)
+    response = get(url, params=params)
     results = response.json()
 
     try:
