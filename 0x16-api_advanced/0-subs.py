@@ -8,8 +8,6 @@ subreddit. If an invalid subreddit is given, the function should return 0.
 
 import requests
 
-BASE_URL = "https://www.reddit.com/r"
-
 
 def number_of_subscribers(subreddit):
     """
@@ -19,6 +17,8 @@ def number_of_subscribers(subreddit):
     """
     if subreddit is None or not isinstance(subreddit, str):
         return 0
+
+    BASE_URL = "https://www.reddit.com/r"
 
     headers = {"User-Agent": "Google Chrome Version 125.0.6422.142"}
 
