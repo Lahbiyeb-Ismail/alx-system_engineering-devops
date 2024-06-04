@@ -17,12 +17,12 @@ def number_of_subscribers(subreddit):
     subscribers (not active users, total subscribers) for a given
     subreddit. If an invalid subreddit is given, the function should return 0.
     """
-    if subreddit is None or type(subreddit) is not str:
+    if subreddit is None or not isinstance(subreddit, str):
         return 0
 
-    headers = {"User-Agent": "Google Chrome version 88.0.4324.150"}
+    headers = {"User-Agent": "Google Chrome Version 125.0.6422.142"}
 
-    url = f"{BASE_URL}/{subreddit}/about.json"
+    url = "{}/{}/about.json".format(BASE_URL, subreddit)
 
     try:
         res = requests.get(url, headers=headers)
