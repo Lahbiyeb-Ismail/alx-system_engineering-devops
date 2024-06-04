@@ -19,22 +19,19 @@ def number_of_subscribers(subreddit):
         return 0
 
     BASE_URL = "https://www.reddit.com/r"
-    # headers = {"User-Agent": "api_advanced-project"}
+    headers = {"user-agent": "api_advanced-project"}
 
     url = "{}/{}/about.json".format(BASE_URL, subreddit)
 
-    try:
-        res = requests.get(url, allow_redirects=False)
-        if res.status_code != 200:
-            return 0
-
-        results = res.json()
-        data = results.get("data")
-        subscribers = data.get("subscribers")
-
-        if subscribers is None:
-            return 0
-
-        return subscribers
-    except Exception:
+    res = requests.get(url, allow_redirects=False, headers=headers)
+    if res.status_code != 200:
         return 0
+
+    results = res.json()
+    data = results.get("data")
+    subscribers = data.get("subscribers")
+
+    if subscribers is None:
+        return 0
+
+    return subscribers

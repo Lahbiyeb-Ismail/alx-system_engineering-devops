@@ -13,17 +13,22 @@ def top_ten(subreddit):
     function that queries the Reddit API and prints the titles of the first
     10 hot posts listed for a given subreddit
     """
-    user_agent = {"User-Agent": "api_advanced-project"}
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    parameters = {"limit": 10}
-    results = requests.get(
-        url, params=parameters, headers=user_agent, allow_redirects=False
+    user_agent = {"user-agent": "Mozilla/5.0"}
+    params = {"limit": 10}
+
+    response = requests.get(
+        url,
+        params=params,
+        allow_redirects=False,
+        headers=user_agent,
     )
 
-    if results.status_code == 200:
-        my_data = results.json().get("data").get("children")
+    if response.status_code == 200:
+        posts = response.json().get("data").get("children")
 
-        for i in my_data:
-            print(i.get("data").get("title"))
+        for post in posts:
+            post_title = post.get("data").get("title")
+            print(post_title)
     else:
         print("None")
